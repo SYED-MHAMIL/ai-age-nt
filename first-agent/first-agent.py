@@ -1,0 +1,38 @@
+from agents import Agent, Runner, AsyncOpenAI, function_tool, set_default_openai_client, set_tracing_disabled, set_default_openai_api
+import os
+from dotenv import load_dotenv
+import google.generativeai as genai
+load_dotenv()
+gemini_api_key = os.getenv("GOOGLE_API_KEY")
+set_tracing_disabled(disabled=True)
+set_default_openai_api("chat_completions")
+genai.configure(api_key=gemini_api_key)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+@function_tool
+def ask_gemini(prompt: str) -> str:
+    """Ask Google Gemini API for a response."""
+    response = model.generate_content(prompt)
+    return response.text
+
+
+external_client = AsyncOpenAI(
+    api_key=gemini_api_key,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"   
+)
+
+
+set_default_openai_client(external_client)
+
+agent: Agent = Agent(
+    name="Assistant",
+      instructions="You are a helpful assistant",
+      model="gemini-2.0-flash",
+      tools=[ask_gemini] )
+
+result = Runner.run_sync(agent, "What's wheather of tokya")
+
+print(result.final_output)
+
+
+
