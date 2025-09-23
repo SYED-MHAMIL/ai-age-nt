@@ -1,5 +1,5 @@
 #  0. Importing the necessary libraries
-from agents import Agent, Runner, OpenAIChatCompletionsModel, AsyncOpenAI,set_tracing_disabled
+from agents import Agent, Runner, OpenAIChatCompletionsModel,function_tool, AsyncOpenAI,set_tracing_disabled
 import os
 import asyncio
 from dotenv import load_dotenv, find_dotenv
@@ -14,19 +14,40 @@ external_client: AsyncOpenAI = AsyncOpenAI(
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
 )
 
+
+
+
 # 2. Which LLM Model to use?
 llm_model: OpenAIChatCompletionsModel = OpenAIChatCompletionsModel(
     model="gemini-2.5-flash",
     openai_client=external_client
 )
 
+# tools 
+
+# @function_tool
+# def multiply(a:int,b:int)-> int :
+#     """ Exact Multiplication (use this instead of guessing math) """
+#     return a*b
+# @function_tool
+# def sum(a:int, b:int) -> int :
+#     """ Exact addition (use this instead of guessing math) """
+#     return a+b
+    
 # 3. Creating the Agent
-agent: Agent = Agent(name="Assistant",instructions='You are a helpful math assistant uo have to understand concept ', model=llm_model)
+agent: Agent = Agent(
+    name="Assistant",
+    instructions=(
+        'You are a helpful math assistant '
+        ' Always follow DMAS rule (division, multiplication, addition, subtraction). '
+        "Explain answers clearly and briefly for beginners."          
+    ),
+    model=llm_model)
 
 # 4. Running the Agent
 
 async def main():
-    result =await Runner.run(starting_agent=agent, input="what is rational number")
+    result =await Runner.run(starting_agent=agent, input="what is 4-4+8*9")
 
     print("AGENT RESPONSE: " , result.final_output)
 
