@@ -4,7 +4,6 @@ from agents import Agent,Runner,function_tool,ModelSettings,OpenAIChatCompletion
 
 # load env
 load_dotenv()
-
 # disabled to connect the openAI API tracing
 set_tracing_disabled(disabled=True)
 GIMINI_API_KEY = os.getenv("GOOGLE_API_KEY")  
@@ -134,7 +133,6 @@ def main():
     model_settings=ModelSettings(max_tokens=200,temperature=0.9),
     model= model
 )
-
     # question = "What is multiplication of 4x5"
     # question1 = "The Spider and the Fly"
     
@@ -161,22 +159,48 @@ def main():
 
     # Agent can use multiple tools at once
 
-parallel_agent = Agent(
+    parallel_agent = Agent(
     name="Multi-tasker" , 
     tools= [calculate_area,translator],
     model_settings=ModelSettings(
         tool_choice="auto",
         # parallel_tool_calls=True , 
+        max_tokens=1500
     ),
     model=model
-)
+    )
 
-question  = "5x3'lük bir dikdörtgenin alanı nedir?"
-result_parallel_agent =Runner.run_sync(parallel_agent,question)
+    question  = "What is the area of ​​a 5x3 rectangle?"
+    result_parallel_agent =Runner.run_sync(parallel_agent,question)
 
-print('\n Parallels tools run simultaneously:')
-print(result_parallel_agent.final_output)
+    # print('\n Parallels tools run simultaneously:')
+    # print(result_parallel_agent.final_output)
+    
+     
+    #   EXAMPLES# 6
+    
+    # Top-P and Penalties
+    
+    focused_agent = Agent(
+        name="Focused",
+        model_settings=ModelSettings(
+            temperature=0.7,
+            top_p=0.3,
+            # remove penalties from here 👇
+        ),
+        model=model
+    )
 
+    # When you actually call the model/run, pass penalties like this:
+    # response = focused_agent.run(
+    #     "Write a creative intro",
+    #     frequency_penalty=0.5,
+    #     presence_penalty=0.3
+    # )
+    question ="What is differnce between shall and will"
+    result_focused_agent =Runner.run_sync(focused_agent,question)
+    print("\n  Top-p and panalties:")
+    print(result_focused_agent.final_output)
 
 
 
