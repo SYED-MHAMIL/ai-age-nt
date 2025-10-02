@@ -13,7 +13,7 @@ external_client: AsyncOpenAI = AsyncOpenAI(api_key=GIMINI_API_KEY,base_url=BASE_
 model:OpenAIChatCompletionsModel = OpenAIChatCompletionsModel(model="gemini-2.5-flash" , openai_client=external_client)
 
 
-@function_tool
+@function_tool  
 def calculate_area(length:int,width: int) -> int:
     """Calculate the area of rectangle """
     area = length * width
