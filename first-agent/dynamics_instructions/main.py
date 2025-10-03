@@ -184,6 +184,56 @@ def main():
     print("Context Explorer Agent:")
     print(result.final_output)
     
+    
+
+
+    # 🎯 Example 5: Exploring Context and Agent
+    print("\n🎭 Example 5: Async Dynamic Instructions")
+    print("-" * 40)
+    
+
+
+    import asyncio
+
+    async def asyncInstructions(context: RunContextWrapper[UserInfo],agent:Agent)->str:
+        # Simulate Fetching data from database
+        await asyncio.sleep(0.1)
+        import datetime
+        current_time = datetime.datetime.now().hour
+        
+        return f"""You are {agent.name}, an AI assistant with real-time capabilities.
+                 Provide helpful and timely responses."""
+
+    agent = Agent(
+    name="Async Agent",
+    instructions=asyncInstructions
+    ,model= llm_provider
+
+     )
+    
+     
+    result = Runner.run_sync(agent, "What is ai-info?",context=user_info)
+    print("Context Explorer Agent:")
+    print(result.final_output)
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     print("\n🎉 You've learned Dynamic Instructions!")
     print("💡 Try changing the functions and see what happens!")
 
