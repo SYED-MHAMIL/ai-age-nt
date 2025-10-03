@@ -67,7 +67,26 @@ def main():
 
 
     def context_aware(context:RunContextWrapper[UserInfo],agent:Agent)
+        """Context-aware instructions based on message count."""
+        message_count = len(getattr(context, 'messages', []))
         
+        if message_count == 0:
+            return "You are a welcoming assistant. Introduce yourself!"
+        elif message_count < 3:
+            return "You are a helpful assistant. Be encouraging and detailed."
+        else:
+            return "You are an experienced assistant. Be concise but thorough."
+    
+    agent_context = Agent(
+        name="Context Aware Agent",
+        instructions=context_aware,
+        model=llm_provider
+    )    
+
+    result1= Runner.run_sync(agent_context,"hello")
+    print("First message:")
+    print(result1.final_output)
+    
 
 
 if __name__  == "__main__":
