@@ -83,13 +83,13 @@ def main():
         model=llm_provider
     )    
 
-    result1= Runner.run_sync(agent_context,"hello",context=user_info)
-    print("First message:")
-    print(result1.final_output)
+    # result1= Runner.run_sync(agent_context,"hello",context=user_info)
+    # print("First message:")
+    # print(result1.final_output)
     
-    result2 = Runner.run_sync(agent_context, "Tell me about Python",context=user_info)
-    print("\nSecond message:")
-    print(result2.final_output)
+    # result2 = Runner.run_sync(agent_context, "Tell me about Python",context=user_info)
+    # print("\nSecond message:")
+    # print(result2.final_output)
     
     
     # 🎯 Example 3: Time-Based Instructions
@@ -114,9 +114,9 @@ def main():
         model=llm_provider
     )    
 
-    result1= Runner.run_sync(agent_time_based,"hello",context=user_info)
+    # result1= Runner.run_sync(agent_time_based,"hello",context=user_info)
     print("First message:")
-    print(result1.final_output)
+    # print(result1.final_output)
     
     
     
@@ -146,11 +146,47 @@ def main():
         model= llm_provider
     )
 
-    for i in range(3):
-        result = Runner.run_sync(agent_stateful,input=f"Question {i+1}: Tell me about AI",context=user_info)
-        print(f"Interaction {i+1}:")
-        print(result.final_output[:100] + "...")
-        print()
+    # for i in range(3):
+    #     result = Runner.run_sync(agent_stateful,input=f"Question {i+1}: Tell me about AI",context=user_info)
+    #     print(f"Interaction {i+1}:")
+    #     print(result.final_output[:100] + "...")
+    #     print()
+
+      
+
+     
+     
+    # 🎯 Example 5: Exploring Context and Agent
+    print("\n🎭 Example 5: Exploring Context and Agent")
+    print("-" * 40)
+    
+    def explore_context_and_agent(context: RunContextWrapper[UserInfo], agent: Agent) -> str:
+        """Explore what's available in context and agent."""
+        # Access conversation messages
+        messages = getattr(context, 'messages', [])
+        message_count = len(messages)
+        
+        # Access agent properties
+        agent_name = agent.name
+        tool_count = len(agent.tools)
+        
+        return f"""You are {agent_name} with {tool_count} tools. 
+        This is message #{message_count} in our conversation.
+        Be helpful and informative about ai tech stack!"""
+    
+    agent_explorer = Agent(
+        name="Ai Assists",
+        instructions=explore_context_and_agent,
+        model=llm_provider
+    )
+    
+    result = Runner.run_sync(agent_explorer, "What can you tell me about yourself?",context=user_info)
+    print("Context Explorer Agent:")
+    print(result.final_output)
+    
+    print("\n🎉 You've learned Dynamic Instructions!")
+    print("💡 Try changing the functions and see what happens!")
+
 
 
 
