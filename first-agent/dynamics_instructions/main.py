@@ -19,12 +19,13 @@ def main():
         name: str
         uid: int
 
+    user_info = UserInfo("zain",1) 
     
   # 🎯 Example 1: Basic Dynamic Instructions
     print("\n🎭 Example 1: Basic Dynamic Instructions")
     print("-" * 40)
 
-    def basic_dynamic(context: RunContextWrapper, agent: Agent) -> str:
+    def basic_dynamic(context: RunContextWrapper[UserInfo], agent: Agent) -> str:
         """Basic dynamic instructions function."""
         return f"You are {agent.name}. Be helpful and friendly."
     
@@ -34,19 +35,18 @@ def main():
         model=llm_provider
     )
     
-    result = Runner.run_sync(agent_basic, "Hello!")
+    result = Runner.run_sync(agent_basic, "Hello!", context=user_info)
     print("Basic Dynamic Agent:")
     print(result.final_output)
 
 
     
     # 🎯 Example 2: Context-Aware Instructions
-    print("\n🎭 Example 2: Context-Aware Instructions")
+    print("\n🎭 Example 2: dynamic_instructions  Instructions")
     print("-" * 40)
 
     def dynamic_instructions(context: RunContextWrapper[UserInfo], agent: Agent) -> str:
         return f"You are {agent.name}. Adapt to the user's needs. The user's name is {context.context.name}. Help them with their questions."
-    
 
 
     agent = Agent(
@@ -61,8 +61,13 @@ def main():
     print(output.final_output)
 
 
+    # 🎯 Example 2: Context-Aware Instructions
+    print("\n🎭 Example 3: Context-Aware Instructions")
+    print("-" * 40)
 
 
+    def context_aware(context:RunContextWrapper[UserInfo],agent:Agent)
+        
 
 
 if __name__  == "__main__":
