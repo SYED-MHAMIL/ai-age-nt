@@ -29,9 +29,7 @@ def dynamic_instructions(context: RunContextWrapper[UserInfo], agent: Agent) -> 
 agent = Agent(
     name="Smart Assistant",
     instructions=dynamic_instructions , # ✅ Changes based on context
-    model=llm_provider,
-
-     
+    model=llm_provider
 )
 
 user_info = UserInfo("zain",1)
