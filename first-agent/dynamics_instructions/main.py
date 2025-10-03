@@ -61,12 +61,12 @@ def main():
     print(output.final_output)
 
 
-    # 🎯 Example 2: Context-Aware Instructions
+    # 🎯 Example 3: Context-Aware Instructions
     print("\n🎭 Example 3: Context-Aware Instructions")
     print("-" * 40)
 
 
-    def context_aware(context:RunContextWrapper[UserInfo],agent:Agent)
+    def context_aware(context:RunContextWrapper[UserInfo],agent:Agent):
         """Context-aware instructions based on message count."""
         message_count = len(getattr(context, 'messages', []))
         
@@ -83,7 +83,38 @@ def main():
         model=llm_provider
     )    
 
-    result1= Runner.run_sync(agent_context,"hello")
+    result1= Runner.run_sync(agent_context,"hello",context=user_info)
+    print("First message:")
+    print(result1.final_output)
+    
+    result2 = Runner.run_sync(agent_context, "Tell me about Python",context=user_info)
+    print("\nSecond message:")
+    print(result2.final_output)
+    
+    
+    # 🎯 Example 3: Time-Based Instructions
+    print("\n🎭 Example 4: Time-Based Instructions")
+    print("-" * 40)
+    
+    import datetime
+    
+    def time_based(context: RunContextWrapper[UserInfo], agent: Agent) -> str:
+        """Time-based instructions based on current hour."""
+        current_hour = datetime.datetime.now().hour
+        if 6<=current_hour < 12:
+            return f"You are {agent.name}. Good morning! Be energetic and positive."
+        elif 12 <= current_hour < 17:
+            return f"You are {agent.name}. Good afternoon! Be focused and productive."
+        else:
+            return f"You are {agent.name}. Good evening! Be calm and helpful."
+    
+    agent_time_based = Agent(
+        name="Context Aware Agent",
+        instructions=time_based,
+        model=llm_provider
+    )    
+
+    result1= Runner.run_sync(agent_time_based,"hello",context=user_info)
     print("First message:")
     print(result1.final_output)
     
