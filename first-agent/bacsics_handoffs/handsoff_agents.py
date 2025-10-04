@@ -28,7 +28,7 @@ triage_agent = Agent(
 
 
 async def main():
-    result = await Runner.run(triage_agent, "I need to check refund status please give me.")
+    result = await Runner.run(triage_agent, "I need to check refund status.")
     print(result.final_output)
 
 asyncio.run(main())
