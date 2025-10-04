@@ -34,7 +34,7 @@ llm_model: OpenAIChatCompletionsModel = OpenAIChatCompletionsModel(
 #     """ Exact addition (use this instead of guessing math) """
 #     return a+b
     
-# 3. Creating the Agent
+# creat  Agent
 agent: Agent = Agent(
     name="Assistant",
     instructions=(
