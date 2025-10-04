@@ -21,6 +21,13 @@ def ask_gemini(prompt: str) -> str:
     response = model.generate_content(prompt)
     return response.text
 
+@function_tool
+def mul(num1: int,num2:int) -> str:
+    """Multiplication of two  number"""
+    return f"The multiplicaation of {num1 *num2}"
+
+
+
 
 external_client = AsyncOpenAI(
     api_key=gemini_api_key,
@@ -31,11 +38,12 @@ agent: Agent = Agent(
     name="Assistant",
       instructions="You are a helpful assistant",
       model=OpenAIChatCompletionsModel(model="gemini-2.0-flash", openai_client=external_client),
-      tools=[ask_gemini] )
+      tools=[ask_gemini,] )
 
-result = Runner.run_sync(agent, "What's wheather of tokya")
+# result = Runner.run_sync(agent, "What's wheather of tokya")
 
-print(result.final_output)
+# print(result.final_output)
 
 
-
+import json 
+print(agent.tools)

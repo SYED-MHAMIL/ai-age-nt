@@ -64,8 +64,6 @@ def main():
     # 🎯 Example 3: Context-Aware Instructions
     print("\n🎭 Example 3: Context-Aware Instructions")
     print("-" * 40)
-
-
     def context_aware(context:RunContextWrapper[UserInfo],agent:Agent):
         """Context-aware instructions based on message count."""
         message_count = len(getattr(context, 'messages', []))
