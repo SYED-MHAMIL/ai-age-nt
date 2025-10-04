@@ -19,7 +19,7 @@ class UserInfo:
     name: str
     uid: int
 
-# A tool function that accesses local context via the wrapper
+# A tool function thats accesses local context via the wrapper
 @function_tool
 async def search(local_context: RunContextWrapper[UserInfo]) -> str:  
     
