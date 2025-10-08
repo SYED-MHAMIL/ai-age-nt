@@ -22,6 +22,25 @@ async def main():
 
 
 
+    print("Raw response events\n")
+
+    # agent = Agent(
+    # name="Joker",
+    # instructions=  "You are a helpful assistant. First, determine how many jokes to tell, then provide jokes.",
+    # model= llm_provider , 
+    #  tools= [how_many_jokes]
+    #  )
+    
+    # result = Runner.run_streamed(agent,input= "Please tell me 5 jokes.")
+    # async for event in result.stream_events():
+    #     if event.type == "raw_response_event" and isinstance(event.data,ResponseTextDeltaEvent):   
+    #        print(event.data.delta, end="", flush=True)
+
+    
+    print("*"*30)
+    print("Run item events and agent event:\n")
+    
+
     agent = Agent(
     name="Joker",
     instructions=  "You are a helpful assistant. First, determine how many jokes to tell, then provide jokes.",
@@ -29,15 +48,28 @@ async def main():
      tools= [how_many_jokes]
      )
     
-     
-    result = Runner.run_streamed(agent,input= "Please tell me 5 jokes.")
+    result = Runner.run_streamed(agent,input=  " Hello ")
     async for event in result.stream_events():
-        if event.type == "raw_response_event" and isinstance(event.data,ResponseTextDeltaEvent):   
-           print(event.data.delta, end="", flush=True)
+         # We'll ignore the raw responses event deltas
+        if event.type == "raw_response_event":
+            continue
+        # When the agent updates, print that
+        elif event.type == "agent_updated_stream_event":
+            print(f"Agent updated: {event.new_agent.name}")
+            continue
+        # When items are generated, print them
+        elif event.type == "run_item_stream_event":
+            if event.item.type == "tool_call_item":
+                print("-- Tool was called")
+            elif event.item.type == "tool_call_output_item":
+                print(f"-- Tool output: {event.item.output}")
+            elif event.item.type == "message_output_item":
+                print(f"-- Message output:\n {ItemHelpers.text_message_output(event.item)}")
+            else:
+                pass  # Ignore other event types
 
-    
-    
-    
+    print("=== Run complete ===")
+
 
 
 
