@@ -112,26 +112,64 @@ async def main():
     result_math  =await Runner.run(math_agent, query)
 
     print(" help full asistannt \n")
-    print(result.final_output)
+    # print(result.final_output)
 
     print("frifndly full asistannt \n")
-    print(result1.final_output)
+    # print(result1.final_output)
      
 
     print("Wheather asistannt \n")
-    print(result_wheather.final_output)
+    # print(result_wheather.final_output)
     
 
 
     print("Math agent asistannt \n")
-    print(result_math.final_output)
+    # print(result_math.final_output)
     
+    print(" ONE all Exmaplples \n")
+    print("*" * 30)
+  
+
+    # Create a base agent
+    base_agent = Agent(
+        name="BaseAssistant",
+        instructions="You are a helpful assistant.",
+        model_settings=ModelSettings(temperature=0.7),
+        model= llm_provider
+    )
+
+    # Create multiple specialized variants
+    agents = {
+        "Creative": base_agent.clone(
+            name="CreativeWriter",
+            instructions="You are a creative writer. Use vivid language.",
+            model_settings=ModelSettings(temperature=0.9)
+        ),
+        "Precise": base_agent.clone(
+            name="PreciseAssistant", 
+            instructions="You are a precise assistant. Be accurate and concise.",
+            model_settings=ModelSettings(temperature=0.1)
+        ),
+        "Friendly": base_agent.clone(
+            name="FriendlyAssistant",
+            instructions="You are a very friendly assistant. Be warm and encouraging."
+        ),
+        "Professional": base_agent.clone(
+            name="ProfessionalAssistant",
+            instructions="You are a professional assistant. Be formal and business-like."
+        )
+    }
+
+    # Test all variants
+    query = "Tell me about artificial intelligence."
+    for name, agent in agents.items():
+        result =await Runner.run_sync(agent, query)
+        print(f"\n{name} Agent:")
+        print(result.final_output[:100] + "...")
+
+
 
     print("=== Run complete ===")
-
-
-
-
 
 
     print("\n🎉 You've learned streaming!")
