@@ -27,9 +27,12 @@ async def main():
     @function_tool
     def get_weather(city: str) -> str:
         return f"Weather in {city}: Sunny, 72°F"
+    
+    @function_tool
+    def new_tool():
+        return "I'm a new tool"
 
-
-    print("Clonning\n")
+    print("Clonning agent question\n")
 
     # agent = Agent(
     # name="Joker",
@@ -102,8 +105,12 @@ async def main():
     tools=[calculate_area],  # Same tools
     instructions="You are a math specialist."
 )
+    base_agent.tools.append(new_tool)
 
-
+    print("friendly tool",friendly_agent.tools) 
+    print("Weather tool",weather_agent.tools) 
+    print("Weather tool",math_agent.tools) 
+   
     
     query =  "hello, How are You"
     result  =await Runner.run(base_agent, query )
@@ -125,8 +132,9 @@ async def main():
 
     print("Math agent asistannt \n")
     # print(result_math.final_output)
-    
-    print(" ONE all Exmaplples \n")
+
+
+    print("\n ONE all Exmaplples \n")
     print("*" * 30)
   
 
@@ -152,7 +160,7 @@ async def main():
         ),
         "Friendly": base_agent.clone(
             name="FriendlyAssistant",
-            instructions="You are a very friendly assistant. Be warm and encouraging."
+            instructions=   "You are a very friendly assistant. Be warm and encouraging."
         ),
         "Professional": base_agent.clone(
             name="ProfessionalAssistant",

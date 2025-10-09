@@ -214,23 +214,6 @@ def main():
     print("Context Explorer Agent:")
     print(result.final_output)
     
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     print("\n🎉 You've learned Dynamic Instructions!")
     print("💡 Try changing the functions and see what happens!")
