@@ -161,9 +161,9 @@ async def main():
     }
 
     # Test all variants
-    query = "Tell me about artificial intelligence."
+    query = "What is love"
     for name, agent in agents.items():
-        result =await Runner.run_sync(agent, query)
+        result =await Runner.run(agent, query)
         print(f"\n{name} Agent:")
         print(result.final_output[:100] + "...")
 
