@@ -1,7 +1,7 @@
 import asyncio
 import os
 from dotenv import load_dotenv, find_dotenv
-from agents import Agent,Runner,set_default_openai_api,set_default_openai_client,set_tracing_export_api_key
+from agents import Agent,Runner,function_tool,set_default_openai_api,set_default_openai_client,set_tracing_export_api_key
 from openinference.instrumentation.openai_agents import OpenAIAgentsInstrumentor
 from openai import AsyncOpenAI 
 from langfuse import get_client
@@ -29,7 +29,10 @@ OpenAIAgentsInstrumentor().instrument()
 
 # Verify connection
 
-langfuse =  get_client()
+langfuse =  get_client(
+
+
+)
 
 if langfuse.auth_check():
     print("✅ Langfuse client is authenticated and ready!")
@@ -38,12 +41,23 @@ else:
     
 
 
+
+# Example function tool.
+@function_tool
+def get_city_weather(city: str) -> str:
+    return f"The weather in {city} is sunny."
+
+# -----------------------------
+# Define async main function
+
+
 async def main():
     """Run an AI agent that replies in haikus."""
     agent = Agent(
         name="Assistant",
         instructions="You only respond in haikus.",
         model = "gemini-2.5-flash",
+        tools= [get_city_weather] 
     )
 
     result = await Runner.run(agent, "Tell me about recursion in programming.")
