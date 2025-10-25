@@ -64,6 +64,10 @@ async def main():
     print("\n--- Agent Response ---")
     print(result.final_output)
 
+    result = await Runner.run(agent, "What's the weather in Islamabad?")
+    print("\n--- Agent Response ---")
+    print(result.final_output)
+
 
 # -----------------------------
 # Entry point
