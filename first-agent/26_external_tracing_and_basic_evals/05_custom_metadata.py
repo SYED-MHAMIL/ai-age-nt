@@ -40,6 +40,7 @@ set_tracing_export_api_key(openai_api_key)
 # -----------------------------
 langfuse = get_client()
 
+
 # Verify connection
 if langfuse.auth_check():
     print("✅ Langfuse client is authenticated and ready!")
