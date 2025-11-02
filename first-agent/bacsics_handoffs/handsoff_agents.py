@@ -16,7 +16,7 @@ llm_provider : OpenAIChatCompletionsModel = OpenAIChatCompletionsModel(model='ge
 fitness_coach = Agent(
     name="Fitness Coach",
     instructions=(
-        # "You're a running coach. Ask 1-2 quick questions, then give a week plan. "
+        "You're a running coach. Ask 1-2 quick questions, then give a week plan. "
         "Keep it simple and encouraging. No medical advice."
         "If ask  to you you give them reply 'I'm  is fitness coach'"
     ),
