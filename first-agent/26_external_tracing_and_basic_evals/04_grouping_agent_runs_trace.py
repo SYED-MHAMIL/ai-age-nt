@@ -15,12 +15,12 @@ load_dotenv(find_dotenv())  # Load local .env file
 OpenAIAgentsInstrumentor().instrument()
 
 # Load environment variables
+# --- Environment setup
 os.getenv("LANGFUSE_PUBLIC_KEY")
 os.getenv("LANGFUSE_SECRET_KEY")
 os.getenv("LANGFUSE_HOST")
 
 # Set OpenAI API key
-# --- Environment setup
 gemini_api_key = os.getenv("GOOGLE_API_KEY")
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
@@ -58,7 +58,8 @@ async def main():
     )
 
     with trace("Joke workflow Generator"):
-        first_result = await Runner.run(agent, "Tell me a joke")
+        first_result = await Runner.run(agent, "Tell me a joke about dog" 
+        "")
         second_result = await Runner.run(agent, f"Rate this joke: {first_result.final_output}")
         print(f"Joke: {first_result.final_output}")
         print(f"Rating: {second_result.final_output}")
